@@ -1,24 +1,22 @@
-import logo from './logo.svg';
 import './App.css';
+import  Header from './components/Header/Header';
+import { ApiForm } from './container/ApiForm/ApiForm';
+import  SignUp from './container/SignUp/SignUp';
+import SignIn from './container/SignIn/SignIn';
+import {BrowserRouter, Route} from 'react-router-dom';
+import QuesSubmit from './container/QuestionSubmit/QuestionSubmit';
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <BrowserRouter>    
+      <div className="App">
+        <Header></Header>
+        <Route path="/" exact component={ApiForm} />
+        <Route path="/login" component={SignIn} />
+        <Route path="/addques" component={QuesSubmit} />
+        <Route path="/signup" component={SignUp} />
+      </div>
+    </BrowserRouter>
   );
 }
 
