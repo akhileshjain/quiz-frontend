@@ -8,6 +8,7 @@ import { urlGenerator } from "../../common/utils";
 import QuizDropDown from '../../components/UI/QuizDropDown';
 import QuizTextField from '../../components/UI/QuizTextfield';
 import QuizButton from '../../components/UI/QuizButton';
+import * as MetadataService from '../../services/metadata.service';
 
 export const ApiForm = () => {
     const useStyles = makeStyles((theme) => ({
@@ -37,9 +38,9 @@ export const ApiForm = () => {
 
     useEffect(() => {
         async function fetchCategories() {
-            const response = await fetch('https://jsonplaceholder.typicode.com/posts');
-            const json = await response.json();
-            setContributors(json);
+            const response = await MetadataService.getQuizMetadata();
+            // const json = await response.json();
+            setContributors(response);
         }
         fetchCategories(); 
     }, []);
@@ -47,7 +48,7 @@ export const ApiForm = () => {
     let category = null;
     if(categories) {
         category = categories.map(sel => {
-            return <MenuItem key = {sel.id} value={sel.id}>{sel.title}</MenuItem>
+            return <MenuItem key = {sel._id} value={sel._id}>{sel.name}</MenuItem>
         })} 
     const submitHandler = (data) => {   
         let url = urlGenerator(data);        

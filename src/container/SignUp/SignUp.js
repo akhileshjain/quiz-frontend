@@ -7,6 +7,7 @@ import {yupResolver} from '@hookform/resolvers';
 import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
 import QuizTextField from "../../components/UI/QuizTextfield";
 import QuizButton from "../../components/UI/QuizButton";
+import * as AuthService from '../../services/auth.service';
 
 const useStyles = makeStyles((theme) => ({
     paper: {
@@ -38,7 +39,8 @@ const useStyles = makeStyles((theme) => ({
       email: yup.string().required("This is a required field")
               .matches(/^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/, "Not a valid e-mail address"),
       password: yup.string().required("This is a required field")
-                .min(8, "Password should be a minimum of 8 characters")
+                .min(8, "Password should be a minimum of 8 characters"),
+      phone: yup.string().matches(/^[0-9]{10}$/, 'Not a valid telephone number')
     });
 
     const {register, handleSubmit, errors} = useForm({
@@ -46,7 +48,14 @@ const useStyles = makeStyles((theme) => ({
       resolver: yupResolver(schema)
     });
     const signupHandler = (data) => {
-      alert(JSON.stringify(data))
+      (async () => {
+        try {
+          const signUpResponse = await AuthService.userSignup(data);
+          // console.log(signUpResponse);
+        } catch (error) { 
+          throw error;
+        }
+      })(data);
     }
   return (
         <Container component="main" maxWidth="xs">
@@ -123,6 +132,18 @@ const useStyles = makeStyles((theme) => ({
                     autoComplete="current-password"
                     error= {errors?.password}
                     helperText={errors?.password?.message}
+                ></QuizTextField>
+                </Grid>
+                <Grid item xs={12}>
+                <QuizTextField
+                    fullWidth
+                    refs={register}
+                    name="phone"
+                    label="Mobile Number"
+                    type="number"
+                    id="phone"
+                    error= {errors?.phone}
+                    helperText={errors?.phone?.message}
                 ></QuizTextField>
                 </Grid>
             </Grid>

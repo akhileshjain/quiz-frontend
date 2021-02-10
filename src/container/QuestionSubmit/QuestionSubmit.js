@@ -5,7 +5,7 @@ import {useForm} from 'react-hook-form';
 import QuizTextField from '../../components/UI/QuizTextfield';
 import QuizDropDown from '../../components/UI/QuizDropDown';
 import QuizButton from '../../components/UI/QuizButton';
-import * as Services from '../../common/services';
+import * as MetadataService from '../../services/metadata.service';
 
 const useStyles = makeStyles((theme) => ({
     paper: {
@@ -26,7 +26,7 @@ const QuesSubmit = () => {
     
     useEffect(() => {
         async function a() {
-            const quizMetadata = await Services.getQuizMetadata()
+            const quizMetadata = await MetadataService.getQuizMetadata()
             console.log(quizMetadata);
             setMetadata({
                 "categories": quizMetadata
@@ -38,7 +38,7 @@ const QuesSubmit = () => {
     let category = null;
     if(metadata.categories) {
         category = metadata.categories.map(sel => {
-            return <MenuItem key = {sel.id} value={sel.id}>{sel.title}</MenuItem>
+            return <MenuItem key = {sel._id} value={sel._id}>{sel.name}</MenuItem>
         })} 
 
     const onQuesEntered = (data) => {

@@ -13,6 +13,7 @@ import * as yup from 'yup';
 import {yupResolver} from '@hookform/resolvers';
 import QuizTextField from '../../components/UI/QuizTextfield';
 import QuizButton from '../../components/UI/QuizButton';
+import * as AuthService from '../../services/auth.service';
 
 const SignInSide = () => {
   const useStyles = makeStyles((theme) => ({
@@ -61,7 +62,14 @@ const SignInSide = () => {
     resolver: yupResolver(schema)
 });
   const loginHandler = (data) => {
-     alert(JSON.stringify(data));
+    (async() => {
+      try {
+          const response = await AuthService.userSignIn(data);
+          console.log(response);
+      } catch(err) {
+          throw err;
+      }
+    })(data);
    }
   return (
     <Grid container component="main" className={classes.root}>
